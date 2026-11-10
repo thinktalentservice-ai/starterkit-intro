@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "route": "/",
+  "revision": 1,
+  "title": "Demo page",
+  "steps": [
+    {
+      "id": "welcome",
+      "title": "Welcome to the demo",
+      "body": "This short tour shows what is on the page. Use the arrow keys or the buttons to move."
+    },
+    {
+      "id": "hero",
+      "target": "[data-intro=\"hero\"]",
+      "title": "The hero",
+      "body": "Each step can point at any element with a CSS selector.",
+      "placement": "bottom"
+    },
+    {
+      "id": "features",
+      "target": "[data-intro=\"features\"]",
+      "title": "Features",
+      "body": "The page scrolls to the target and the spotlight follows it."
+    },
+    {
+      "id": "alerts",
+      "target": "[data-intro=\"alerts\"]",
+      "title": "Alerts",
+      "body": "This button sits against the right edge; the popover stays inside the viewport.",
+      "placement": "right"
+    },
+    {
+      "id": "not-on-this-page",
+      "target": "[data-intro=\"does-not-exist\"]",
+      "title": "Not here",
+      "body": "A step whose target is missing is skipped without a warning when it is optional.",
+      "optional": true
+    },
+    {
+      "id": "settings",
+      "target": "[data-intro=\"settings\"]",
+      "title": "Settings",
+      "body": "The last step. Press Done to finish; it will not start on its own again."
+    }
+  ]
+}
