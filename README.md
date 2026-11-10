@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/thinktalentservice-ai/starterkit-intro/actions/workflows/ci.yml/badge.svg)](https://github.com/thinktalentservice-ai/starterkit-intro/actions/workflows/ci.yml)
 [![license](https://img.shields.io/npm/l/@devopsnext/starterkit-intro)](./LICENSE)
+[![Storybook](https://img.shields.io/badge/Storybook-live-ff4785?logo=storybook&logoColor=white)](https://thinktalentservice-ai.github.io/starterkit-intro/)
 
 A guided intro ("product tour") for any React app, driven by one small JSON file
 per page. Router-agnostic, no runtime dependencies, its own positioning engine.
@@ -347,7 +348,14 @@ pnpm verify          # typecheck, typecheck:browser, unit tests, build
 pnpm test:browser    # Playwright against demo/ (needs: pnpm exec playwright install chromium)
 pnpm demo            # the demo page on http://localhost:5181
 pnpm dev             # rebuild dist/ on change
+pnpm storybook       # component workshop on http://localhost:6008
+pnpm build-storybook # refresh the GitHub Pages site in docs/
 ```
+
+GitHub Pages serves `docs/` from `main`
+([live Storybook](https://thinktalentservice-ai.github.io/starterkit-intro/)).
+It is committed build output: run `pnpm build-storybook` and commit `docs/`
+whenever a story or the component changes.
 
 jsdom has no layout engine, so the unit tests cover the rules and
 `tests/` covers geometry in a real browser. The capture CLI imports

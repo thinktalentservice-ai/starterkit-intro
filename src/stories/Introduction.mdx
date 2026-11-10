@@ -1,0 +1,62 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Introduction" />
+
+# @devopsnext/starterkit-intro
+
+A guided intro ("product tour") for any React app, driven by one small JSON file
+per page. Router-agnostic, no runtime dependencies, its own positioning engine.
+
+- **JSON, not code.** `public/intro/design/badge.json` is the intro for `/design/badge`.
+- **Per page, remembered.** Each page tours itself once per `revision`. Bump it and everyone sees it again.
+- **A CLI that never overwrites a person.** `starterkit-intro capture` scaffolds files from `data-intro="…"` markers.
+- **Peers: `react` and `react-dom` (>=18) only.**
+
+## Install
+
+```bash
+pnpm add --save-exact @devopsnext/starterkit-intro
+```
+
+```ts
+import "@devopsnext/starterkit-intro/styles.css";
+```
+
+## Use
+
+```tsx
+import { IntroProvider, IntroHelpButton } from "@devopsnext/starterkit-intro";
+
+<IntroProvider pathname={pathname} baseUrl="/intro">
+  <IntroHelpButton />
+  <App />
+</IntroProvider>
+```
+
+Mark the elements a tour should point at:
+
+```html
+<section data-intro="hero">…</section>
+```
+
+and describe the tour in `public/intro/index.json` (for the route `/`):
+
+```json
+{
+  "schema": 1,
+  "route": "/",
+  "revision": 1,
+  "steps": [
+    { "id": "welcome", "title": "Welcome", "body": "A centred step: no target." },
+    { "id": "hero", "target": "[data-intro=\"hero\"]", "title": "The hero", "body": "Points at any CSS selector.", "placement": "bottom" }
+  ]
+}
+```
+
+## In this Storybook
+
+- **Components / IntroProvider** — the whole thing on a demo page: auto-start, custom labels, a page with no intro.
+- **Components / IntroTour** — the bare engine: placements, centred steps, missing targets.
+- **Components / Controls** — the help button, the auto-start switch, and theming with host tokens.
+
+Source and full README: [github.com/thinktalentservice-ai/starterkit-intro](https://github.com/thinktalentservice-ai/starterkit-intro).
