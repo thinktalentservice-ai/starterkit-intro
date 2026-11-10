@@ -1,0 +1,349 @@
+/* @devopsnext/starterkit-intro
+ *
+ * Every colour, radius, shadow and font below arrives through a --ii-t-* alias
+ * of a host token, with the think preset's dark value vendored as the fallback.
+ * Rules use only the aliases, so an app that defines the host tokens themes the
+ * tour with no extra work, and one that does not still gets a legible dark tour.
+ *
+ * Geometry knobs (--ii-scrim, --ii-z, --ii-popover-width) are private and
+ * hand-declared: they have no host token, and the one-dash prefix keeps them
+ * out of any codegen that scrapes --ii-t-*.
+ */
+
+:is(.ii-layer, .ii-help-btn, .ii-switch) {
+  --ii-t-surface-elevated: var(--surface-elevated, #161925);
+  --ii-t-fg1: var(--fg1, #f0f2ff);
+  --ii-t-fg2: var(--fg2, #8b93b5);
+  --ii-t-border: var(--border, rgba(255, 255, 255, 0.08));
+  --ii-t-primary-solid: var(--primary-solid, #008aff);
+  --ii-t-primary-solid-hover: var(--primary-solid-hover, #0180ed);
+  --ii-t-primary-on-solid: var(--primary-on-solid, #ffffff);
+  --ii-t-primary-text: var(--primary-text, #399cfe);
+  --ii-t-ring: var(--ring, rgba(0, 138, 255, 0.40));
+  --ii-t-radius: var(--radius, 12px);
+  --ii-t-radius-card: var(--radius-card, 20px);
+  --ii-t-radius-pill: var(--radius-pill, 9999px);
+  --ii-t-shadow-elevated: var(--shadow-elevated, 0 0 0 1px rgba(255, 255, 255, 0.05), 0 14px 44px rgba(0, 0, 0, 0.48));
+  --ii-t-font-body: var(--font-body, system-ui, sans-serif);
+  --ii-t-font-heading: var(--font-heading, system-ui, sans-serif);
+  --ii-t-hover-overlay: var(--hover-overlay, rgba(255, 255, 255, 0.06));
+  --ii-t-ease-entrance: var(--ease-entrance, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.ii-layer {
+  --ii-scrim: rgba(0, 0, 0, 0.55);
+  --ii-z: 1400;
+  --ii-popover-width: 340px;
+
+  position: fixed;
+  inset: 0;
+  z-index: var(--ii-z);
+  font-family: var(--ii-t-font-body);
+  pointer-events: none;
+}
+
+/* Swallows every click so the page underneath cannot be used mid-tour.
+   Clicking it deliberately does nothing: an accidental click must not end the tour. */
+.ii-blocker {
+  position: fixed;
+  inset: 0;
+  background: transparent;
+  pointer-events: auto;
+}
+
+.ii-scrim {
+  position: fixed;
+  inset: 0;
+  background: var(--ii-scrim);
+  pointer-events: none;
+}
+
+/* The hole in the scrim: the element itself is transparent and its enormous
+   shadow is the dimming, so the target stays at full brightness. */
+.ii-spotlight {
+  position: fixed;
+  border-radius: var(--ii-t-radius);
+  box-shadow: 0 0 0 100vmax var(--ii-scrim);
+  pointer-events: none;
+  transition:
+    top 200ms var(--ii-t-ease-entrance),
+    left 200ms var(--ii-t-ease-entrance),
+    width 200ms var(--ii-t-ease-entrance),
+    height 200ms var(--ii-t-ease-entrance);
+}
+
+.ii-popover {
+  position: fixed;
+  box-sizing: border-box;
+  width: min(var(--ii-popover-width), calc(100vw - 16px));
+  max-width: min(var(--ii-popover-width), calc(100vw - 16px));
+  padding: 20px;
+  background: var(--ii-t-surface-elevated);
+  color: var(--ii-t-fg1);
+  border: 1px solid var(--ii-t-border);
+  border-radius: var(--ii-t-radius-card);
+  box-shadow: var(--ii-t-shadow-elevated);
+  pointer-events: auto;
+}
+
+/* Measured before it is shown: the first pass has no position yet. */
+.ii-popover:not([data-ready]) {
+  visibility: hidden;
+}
+
+.ii-popover[data-ready] {
+  animation: ii-pop-in 180ms var(--ii-t-ease-entrance) both;
+}
+
+@keyframes ii-pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.ii-title {
+  margin: 0 0 8px;
+  margin-inline-end: 28px;
+  font-family: var(--ii-t-font-heading);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--ii-t-fg1);
+}
+
+.ii-body {
+  margin: 0 0 16px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ii-t-fg2);
+  overflow-wrap: anywhere;
+}
+
+.ii-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ii-progress {
+  font-size: 12px;
+  color: var(--ii-t-fg2);
+  white-space: nowrap;
+}
+
+.ii-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-inline-start: auto;
+}
+
+.ii-btn {
+  box-sizing: border-box;
+  min-height: 36px;
+  padding: 0 16px;
+  border: 1px solid transparent;
+  border-radius: var(--ii-t-radius-pill);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 120ms var(--ii-t-ease-entrance);
+}
+
+.ii-btn--primary {
+  background: var(--ii-t-primary-solid);
+  color: var(--ii-t-primary-on-solid);
+}
+
+.ii-btn--primary:hover {
+  background: var(--ii-t-primary-solid-hover);
+}
+
+.ii-btn--ghost {
+  background: transparent;
+  color: var(--ii-t-fg2);
+}
+
+.ii-btn--ghost:hover {
+  background: var(--ii-t-hover-overlay);
+  color: var(--ii-t-fg1);
+}
+
+.ii-close {
+  position: absolute;
+  top: 12px;
+  inset-inline-end: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--ii-t-radius-pill);
+  background: transparent;
+  color: var(--ii-t-fg2);
+  cursor: pointer;
+}
+
+.ii-close:hover {
+  background: var(--ii-t-hover-overlay);
+  color: var(--ii-t-fg1);
+}
+
+:is(.ii-btn, .ii-close, .ii-help-btn, .ii-switch):focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--ii-t-ring);
+}
+
+/* The arrow is a rotated square whose two outer borders continue the popover's
+   own border. --ii-arrow is the offset along the edge, set per step by the tour. */
+.ii-arrow {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  box-sizing: border-box;
+  background: var(--ii-t-surface-elevated);
+  border: 1px solid var(--ii-t-border);
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+
+.ii-arrow[data-placement="bottom"] {
+  top: -7px;
+  left: calc(var(--ii-arrow) - 6px);
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+}
+
+.ii-arrow[data-placement="top"] {
+  bottom: -7px;
+  left: calc(var(--ii-arrow) - 6px);
+  border-left-color: transparent;
+  border-top-color: transparent;
+}
+
+.ii-arrow[data-placement="right"] {
+  left: -7px;
+  top: calc(var(--ii-arrow) - 6px);
+  border-right-color: transparent;
+  border-top-color: transparent;
+}
+
+.ii-arrow[data-placement="left"] {
+  right: -7px;
+  top: calc(var(--ii-arrow) - 6px);
+  border-left-color: transparent;
+  border-bottom-color: transparent;
+}
+
+/* Help button */
+.ii-help-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--ii-t-radius-pill);
+  background: transparent;
+  color: var(--ii-t-fg2);
+  font: inherit;
+  cursor: pointer;
+  transition: background-color 120ms var(--ii-t-ease-entrance);
+}
+
+.ii-help-btn:hover:not(:disabled) {
+  background: var(--ii-t-hover-overlay);
+  color: var(--ii-t-fg1);
+}
+
+.ii-help-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Switch */
+.ii-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 6px;
+  border: 0;
+  border-radius: var(--ii-t-radius);
+  background: transparent;
+  color: var(--ii-t-fg1);
+  font-family: var(--ii-t-font-body);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.ii-switch-track {
+  position: relative;
+  flex: none;
+  width: 36px;
+  height: 20px;
+  box-sizing: border-box;
+  border: 1px solid var(--ii-t-border);
+  border-radius: var(--ii-t-radius-pill);
+  background: var(--ii-t-hover-overlay);
+  transition: background-color 120ms var(--ii-t-ease-entrance);
+}
+
+.ii-switch-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: var(--ii-t-radius-pill);
+  background: var(--ii-t-fg2);
+  transition:
+    transform 120ms var(--ii-t-ease-entrance),
+    background-color 120ms var(--ii-t-ease-entrance);
+}
+
+.ii-switch[aria-checked="true"] .ii-switch-track {
+  background: var(--ii-t-primary-solid);
+  border-color: var(--ii-t-primary-solid);
+}
+
+.ii-switch[aria-checked="true"] .ii-switch-thumb {
+  transform: translateX(16px);
+  background: var(--ii-t-primary-on-solid);
+}
+
+[dir="rtl"] .ii-switch-thumb {
+  left: auto;
+  right: 2px;
+}
+
+[dir="rtl"] .ii-switch[aria-checked="true"] .ii-switch-thumb {
+  transform: translateX(-16px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ii-popover[data-ready] {
+    animation: none;
+  }
+
+  .ii-spotlight,
+  .ii-btn,
+  .ii-help-btn,
+  .ii-switch-track,
+  .ii-switch-thumb {
+    transition: none;
+  }
+}
