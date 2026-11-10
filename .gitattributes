@@ -1,0 +1,2 @@
+# A CRLF shebang breaks the CLI on Unix; pnpm refuses to pack it.
+bin/** text eol=lf
