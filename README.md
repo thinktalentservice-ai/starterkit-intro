@@ -48,8 +48,8 @@ from its own `node_modules`, which gives the host two Reacts and an
 `Invalid hook call`; a tarball installs exactly what would ship.
 
 ```bash
-cd ../starterkit-intro && pnpm build && pnpm pack      # devopsnext-starterkit-intro-0.1.0.tgz
-cd ../my-app && pnpm add ../starterkit-intro/devopsnext-starterkit-intro-0.1.0.tgz
+cd ../starterkit-intro && pnpm build && pnpm pack      # devopsnext-starterkit-intro-0.1.1.tgz
+cd ../my-app && pnpm add ../starterkit-intro/devopsnext-starterkit-intro-0.1.1.tgz
 ```
 
 ## Quick start

@@ -1,6 +1,6 @@
 {
   "name": "@devopsnext/starterkit-intro",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "JSON-driven, per-page guided intro (product tour) for any React app. Router-agnostic, zero runtime dependencies.",
   "license": "MIT",
   "type": "module",
